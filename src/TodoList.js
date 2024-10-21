@@ -1,6 +1,7 @@
 import React from "react";
 import TodoListItem from "./TodoListItem";
 import "./Styles.css";
+import axios from "axios";
 
 class TodoList extends React.Component {
   constructor() {
@@ -21,6 +22,23 @@ class TodoList extends React.Component {
         ...prevState.todos.slice(index + 1),
       ],
     }));
+  }
+
+  componentDidMount() {
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos/1")
+      .then((data) =>
+        this.setState({
+          todos: [
+            {
+              id: data.data.id,
+              title: data.data.title,
+              complete: data.data.completed,
+            },
+          ],
+        })
+      )
+      .catch((error) => console.log(error));
   }
 
   render() {
